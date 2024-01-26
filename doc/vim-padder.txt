@@ -17,7 +17,7 @@ TABLE OF CONTENTS
 
 1. Introduction ..................................... |vim-padder-intro|
 2. Usage ............................................ |vim-padder-usage|
-3. Example .......................................... |vim-padder-examples|
+3. Examples ......................................... |vim-padder-examples|
 4. Exercise ......................................... |vim-padder-exercise|
 5. Solution ......................................... |vim-padder-solution|
 6. Customization .................................... |vim-padder-customization|
@@ -30,7 +30,7 @@ INTRODUCTION - 1                                              *vim-padder-intro*
 Vim Padder is a plugin for padding lines with characters up to a fixed width.
 For example, consider the dot leaders in the table of contents just above.
 
-Use your favorite plugin manager for installation. >
+Use your favorite plugin manager for installation.
 
 ================================================================================
 
@@ -83,19 +83,19 @@ brackets indicate direction.  Keep this in mind as you read on.
 			Apply |z>| with a character of your choice.
 
 			That is, pad lines moved over by {motion} with {char} up
-			to the longest of those lines. This operator only knows
-			|linewise| motions. A [count] is also viable.
+			to the longest of those lines.  This operator only knows
+			|linewise| motions.  A [count] is also viable.
 
 	2.1.3 A SPECIAL FEATURE~
 
-	The contraction operators exhibit a special functionality.  *1z>* *1z>>*
+	The expansion operators exhibit a special functionality.  *1z>* *1z>>*
 
 	As far as I know, it's always redundant to prefix Vim's operators with
-	the number one since all operators are implicitly enacted once when
-	applied without a count. In light of this, I have repurposed the number
+	the number one since all operators are implicitly enacted one time when
+	applied without a count.  In light of this, I have repurposed the number
 	one as a flag.  Namely, when a [count] of one is explicitly applied,
 	i.e., issuing |1z>| as apposed to just |z>|, a single-character prompt
-	will appear in the bottom of the screen. The inputted string is then
+	will appear in the bottom of the screen.  The inputted string is then
 	appended to the end of every padded line moved over by {motion}.
 
 	The most intricate situation that can happen is this.
@@ -128,13 +128,13 @@ Three commands are provided.
 
 			Pad lines in [range] with [char] up to the [N]th column
 			wherein the stings [start] and [end] prefix and suffix
-			the padding respectively. The affixes are applied after
+			the padding respectively.  The affixes are applied after
 			counting columns.
 
 			Every aforementioned argument is optional and assumes a
-			default value. The arguments are positional. If the
+			default value.  The arguments are positional.  If the
 			default value should be assumed, pass |v:none| for that
-			argument. The defaults are as follows.
+			argument.  The defaults are as follows.
 
 				[range] --> whole buffer
 				[N]     --> length of longest line in [range]
@@ -234,7 +234,7 @@ Here are some practical examples.
 
 As alluded to in the introduction, we will see how to make a table of contents.
 Let's start out with a basic list.  You'll have to copy the following block into
-a new buffer if you want to follow along. Place your cursor anywhere inside the
+a new buffer if you want to follow along.  Place your cursor anywhere inside the
 block and issue the command `vip` to visually select it. >
 
 	1. Introduction
@@ -329,8 +329,8 @@ Customization is achieved by setting variables in your |.vimrc| file.
 *g:padder_clusivity*	(default: 1)
 
 	When padding lines, the [N]th column may be either included or excluded.
-	It is by default included. To exclude the [N]th column, put this in your
-	|.vimrc| file. >
+	It is by default included.  To exclude the [N]th column, put this in
+	your |.vimrc| file. >
 
 		let g:padder_clusivity = 0
 <
