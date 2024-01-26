@@ -1,0 +1,379 @@
+*vim-padder.txt*	Pad lines up to a fixed width
+*vim-padder*
+
+ __   ___         ___         _    _          ~
+ \ \ / (_)_ __   | _ \__ _ __| |__| |___ _ _  ~
+  \ V /| | '  \  |  _/ _` / _` / _` / -_) '_| ~
+   \_/ |_|_|_|_| |_| \__,_\__,_\__,_\___|_|   ~
+
+Author:   Zachary Krepelka
+Date:     Tuesday, January 23rd, 2024
+
+Origin:   https://github.com/zachary-krepelka/vim-padder
+
+================================================================================
+
+TABLE OF CONTENTS
+
+1. Introduction ..................................... |vim-padder-intro|
+2. Usage ............................................ |vim-padder-usage|
+3. Example .......................................... |vim-padder-examples|
+4. Exercise ......................................... |vim-padder-exercise|
+5. Solution ......................................... |vim-padder-solution|
+6. Customization .................................... |vim-padder-customization|
+7. Credits .......................................... |vim-padder-credits|
+
+================================================================================
+
+INTRODUCTION - 1                                              *vim-padder-intro*
+
+Vim Padder is a plugin for padding lines with characters up to a fixed width.
+For example, consider the dot leaders in the table of contents just above.
+
+Use your favorite plugin manager for installation. >
+
+================================================================================
+
+USAGE - 2                                                     *vim-padder-usage*
+
+2.1 OPERATORS~
+
+This plugin provides two overarching operators, namely `z<` and `z>`.  The angle
+brackets indicate direction.  Keep this in mind as you read on.
+
+        2.1.1 THE CONTRACTION OPERATORS~
+
+	A family of operators for contracting whitepace.
+
+                                                                            *z<*
+		z<{motion}
+
+			Collapse trailing whitespace on the lines moved over by
+			{motion}.  This operator only knows |linewise| motions.
+			A [count] is also viable, as in [count]z<{motion}.
+
+		{Visual}z<
+
+			Collapse trailing whitespace on lines in {Visual}.
+			Here {Visual} is |linewise-visual|.
+                                                                           *z<<*
+		z<<
+
+			Apply |z<| with the |_| motion.  In effect, this applies
+			|z<| to a single line.
+
+        2.1.2 THE EXPANSION OPERATORS~
+
+	A family of operators for expanding whitespace -- and other characters.
+
+                                                                            *z>*
+		z>{motion}
+
+			Pad the lines moved over by {motion} with spaces up to
+			the longest of those lines.  This operator only knows
+			|linewise| motions.  A [count] is also viable.
+
+		{Visual}z>
+
+			Pad lines with spaces in a |linewise-visual|.
+
+                                                                           *z>>*
+		z>>{char}{motion}
+
+			Apply |z>| with a character of your choice.
+
+			That is, pad lines moved over by {motion} with {char} up
+			to the longest of those lines. This operator only knows
+			|linewise| motions. A [count] is also viable.
+
+	2.1.3 A SPECIAL FEATURE~
+
+	The contraction operators exhibit a special functionality.  *1z>* *1z>>*
+
+	As far as I know, it's always redundant to prefix Vim's operators with
+	the number one since all operators are implicitly enacted once when
+	applied without a count. In light of this, I have repurposed the number
+	one as a flag.  Namely, when a [count] of one is explicitly applied,
+	i.e., issuing |1z>| as apposed to just |z>|, a single-character prompt
+	will appear in the bottom of the screen. The inputted string is then
+	appended to the end of every padded line moved over by {motion}.
+
+	The most intricate situation that can happen is this.
+
+		1z>>{char}{motion}{prompt}<Enter>
+
+	This pads the lines moved over by {motion} with {char} up to the longest
+	of those lines, whereafter it appends the string {prompt} to each line.
+
+	2.1.4 ONE FINAL REMARK~
+
+	By default, both families of operators update the visual selection in
+	memory to reflect {motion}.  That selection is then accessible via |gv|.
+	Also, both operators move the cursor.  These two behaviors can be
+	disabled.  See |vim-padder-customization|.
+
+2.2 COMMANDS~
+
+Three commands are provided.
+
+                                                                       *:Crunch*
+	:[range]Crunch
+
+			Collapse trailing whitespace on lines in [range].
+
+				The default [range] is the whole buffer.
+
+                                                                         *:Bang*
+	:[range]Bang [N] [char] [start] [end]
+
+			Pad lines in [range] with [char] up to the [N]th column
+			wherein the stings [start] and [end] prefix and suffix
+			the padding respectively. The affixes are applied after
+			counting columns.
+
+			Every aforementioned argument is optional and assumes a
+			default value. The arguments are positional. If the
+			default value should be assumed, pass |v:none| for that
+			argument. The defaults are as follows.
+
+				[range] --> whole buffer
+				[N]     --> length of longest line in [range]
+				[char]  --> space
+				[start] --> empty string
+				[end]   --> empty string
+
+                                                                       *:Bounce*
+	:[range]Bounce {n}
+
+			Apply the commands |:Crunch| and |:Bang| in succession
+			over the same [range] while passing {n} with all other
+			values default.
+
+				The default [range] is the whole buffer.
+
+			Imagine a circumstance in which `:Bang X` is followed by
+			`:Bang Y` but X > Y.  This would fail to accomplish the
+			desired affect.  The |:Bounce| command resolves this.
+
+2.3 REMARK -- THE ULTIMATE FATE OF THE UNIVERSE~
+
+The aforementioned commands allude to cosmological theories about the end of the
+universe.  I have carefully chosen their names to serve as mnemonics.
+
+	- |:Crunch| contracts whitespace
+	- |:Bang| expands whitespace
+	- |:Bounce| does both
+
+For the unacquainted:
+
+	https://en.wikipedia.org/wiki/Big_Crunch
+	https://en.wikipedia.org/wiki/Big_Bang
+	https://en.wikipedia.org/wiki/Big_Bounce
+
+================================================================================
+
+EXAMPLES - 3                                               *vim-padder-examples*
+
+3.1 BASIC OVERVIEW~
+
+Consider the two following imagines.  The dollar sign denotes the end of a line.
+>
+               A       .  $                 B       .          $
+                      ,O,  $                       ,O,         $
+                     ,OOO,  $                     ,OOO,        $
+               'oooooOOOOOooooo'  $         'oooooOOOOOooooo'  $
+                 `OOOOOOOOOOO`  $             `OOOOOOOOOOO`    $
+                   `OOOOOOO`  $                 `OOOOOOO`      $
+                   OOOO'OOOO  $                 OOOO'OOOO      $
+                  OOO'   'OOO  $               OOO'   'OOO     $
+                 O'         'O  $             O'         'O    $
+
+With this plugin, you can go from `A` to `B` and back again with ease.
+
+	- To go from `B` to `A`, you would use |z<| or |:Crunch|.
+
+	- To go from `A` to `B`, you would use |z>| or |:Bang|.
+
+3.2 SPECIFIC USE CASES~
+
+Here are some practical examples.
+
+- Use `ggz>G` to pad a buffer with whitespace up to its longest line.
+
+	- This is useful in conjunction with |r|, |R|, and |CTRL-V| for creating
+	  ascii-art diagrams.  The cursor becomes free-floating.
+
+	- `:Bang` would also suffice, but you may prefer `:Bang 80`
+
+- Use `ggz<G` to remove all trailing whitespace from a buffer.
+
+	- This is useful for source code cleanliness.
+
+		- https://softwareengineering.stackexchange.com/q/121555
+
+	- `:Crunch` would also suffice.
+
+- Use `1z>ip = <Enter>` when writing variable declaration blocks.
+
+	Before: >
+
+		bool flag
+		int short_var_name
+		string long_variable_name
+
+<
+	After: >
+
+		bool flag                  =  false
+		int short_var_name         =  42
+		string long_variable_name  =  "Hello, World!"
+<
+	In the right circumstances, this can enhance code readability.
+
+3.3 AN EXTENDED EXAMPLE~
+
+As alluded to in the introduction, we will see how to make a table of contents.
+Let's start out with a basic list.  You'll have to copy the following block into
+a new buffer if you want to follow along. Place your cursor anywhere inside the
+block and issue the command `vip` to visually select it. >
+
+	1. Introduction
+	2. Usage
+	3. Example
+
+The command `:'<,'>Bang 50 .` would already suffice, but >
+
+	:'<,'>Bang 50 . \ \ \  \ \ \ |some-plugin-
+
+gives a cleaner appearence with little extra work. >
+
+	1. Introduction   ...........................   |some-plugin-
+	2. Usage   ..................................   |some-plugin-
+	3. Example   ................................   |some-plugin-
+
+We're essentially doing `Bang 50 . ___ ___|`, but we have to escape the spaces.
+
+The normal-mode command `1z>>.ip|some-plugin-<Enter>` is a close match.
+
+================================================================================
+
+EXERCISE - 4                                              *vim-padder-exercises*
+
+Your challenge is to complete the box around the heart.  Go ahead and `y`ank
+`i`nside the `p`aragraph so you can `p`ut this into a |:new| buffer. >
+
+                     +-----------------------------------
+                     |
+                     |        ......       ......
+                     |      ..........   ..........
+                     |    ............. .............
+                     |   .............................
+                     |   .............................
+                     |   .............................
+                     |    ...........................
+                     |      .......................
+                     |        ...................
+                     |           ...............
+                     |            ...........
+                     |              .......
+                     |                ...
+                     |                 .
+                     |
+                     +-----------------------------------
+
+Try to figure it out yourself by reading |vim-padder-usage|.
+Check your answers in the next section.
+
+================================================================================
+
+SOLUTION - 5                                               *vim-padder-solution*
+
+Put your cursor anywhere inside the box.
+
+You could first try >
+
+	z>ipgv:'<,'>norm A|
+
+but it would be quicker to do >
+
+	1z>ip|
+
+Remember, you're not limited to just one-character at the end. >
+
+	1z>ip| <3
+
+Bonus: try to use a different character for the padding.
+
+================================================================================
+
+CUSTOMIZATION - 6                                     *vim-padder-customization*
+
+Customization is achieved by setting variables in your |.vimrc| file.
+
+*g:padder_updates_visual*	(default: 1)
+
+	By default, this plugin's operators update the visual selection in
+	memory to reflect the motion enacted with them.  That selection is then
+	accessible via |gv|.  To preserve the last visual selection, put this in
+	your |.vimrc| file. >
+
+		let g:padder_updates_visual = 0
+
+*g:padder_moves_cursor*	(default: 1)
+
+	By default, the motions applied to this plugin's operators move the
+	cursor.  Add this in your |.vimrc| file to fix the cursor in place. >
+
+		let g:padder_moves_cursor = 0
+
+*g:padder_clusivity*	(default: 1)
+
+	When padding lines, the [N]th column may be either included or excluded.
+	It is by default included. To exclude the [N]th column, put this in your
+	|.vimrc| file. >
+
+		let g:padder_clusivity = 0
+<
+	Note that clusivity is a hypernym of inclusively and exclusivity.
+
+		https://en.wiktionary.org/wiki/clusivity
+
+================================================================================
+
+CREDITS - 7                                                 *vim-padder-credits*
+
+7.1 Pertaining to the source code~
+
+This answer on Stack Overflow provided the core functionality for my plugin.
+
+	https://stackoverflow.com/a/9407042
+
+I adapted the code and made it my own.
+
+This question is also relevant.
+
+	https://stackoverflow.com/q/1316963
+
+7.1 Pertaining to the documentation~
+
+The ascii-art star can be found here.
+
+	https://www.asciiart.eu/space/stars
+
+The ascii-art heart can be found here.
+
+	http://loveascii.com/hearts.html
+
+7.1 Inspirations~
+
+I initially wrote two functions in my |.vimrc|.
+
+	- Flatten(), mapped to <leader>f
+	- Boxify(),  mapped to <leader>b
+
+My need for them arose while authoring LaTeX documents.  After a while, I wanted
+something more versatile, something that would work with motions.  I decided to
+adapt this functionality into a plugin to share with other people.
+
+================================================================================
+vim:tw=80:ts=8:ft=help:
