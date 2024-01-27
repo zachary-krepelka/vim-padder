@@ -50,7 +50,7 @@ brackets indicate direction.  Keep this in mind as you read on.
 
 			Collapse trailing whitespace on the lines moved over by
 			{motion}.  This operator only knows |linewise| motions.
-			A [count] is also viable, as in [count]z<{motion}.
+			A [count] is also viable.
 
 		{Visual}z<
 
@@ -90,8 +90,8 @@ brackets indicate direction.  Keep this in mind as you read on.
 
 	The expansion operators exhibit a special functionality.  *1z>* *1z>>*
 
-	As far as I know, it's always redundant to prefix Vim's operators with
-	the number one since all operators are implicitly enacted one time when
+	As far as I know, it's redundant to prefix Vim's operators with the
+	number one since all operators are implicitly enacted one time when
 	applied without a count.  In light of this, I have repurposed the number
 	one as a flag.  Namely, when a [count] of one is explicitly applied,
 	i.e., issuing |1z>| as apposed to just |z>|, a single-character prompt
@@ -292,15 +292,15 @@ Put your cursor anywhere inside the box.
 
 You could first try >
 
-	z>ipgv:'<,'>norm A|
+	z>ipgv:'<,'>norm A|<Enter>
 
 but it would be quicker to do >
 
-	1z>ip|
+	1z>ip|<Enter>
 
 Remember, you're not limited to just one-character at the end. >
 
-	1z>ip| <3
+	1z>ip| <3<Enter>
 
 Bonus: try to use a different character for the padding.
 

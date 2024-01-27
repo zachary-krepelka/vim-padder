@@ -2,7 +2,7 @@
 " AUTHOR: Zachary Krepelka
 " DATE: Tuesday, January 23rd, 2024
 " ORIGIN: https://github.com/zachary-krepelka/vim-padder
-" UPDATED: Thursday, January 25th, 2024   6:46 PM
+" UPDATED: Saturday, January 27th, 2024 at 11:38 AM
 
 if exists('g:loaded_vim_padder')
 
@@ -12,38 +12,15 @@ endif
 
 let g:loaded_vim_padder = 1
 
-"  __  __                _
-" |  \/  |__ _ _ __ _ __(_)_ _  __ _ ___
-" | |\/| / _` | '_ \ '_ \ | ' \/ _` (_-<
-" |_|  |_\__,_| .__/ .__/_|_||_\__, /__/
-"             |_|  |_|         |___/
+if !exists('g:padder_updates_visual')
 
-nnoremap <unique> <expr> z< <SID>Setup(0)
-vnoremap <unique> <expr> z< <SID>Setup(0)
-nnoremap <unique> <expr> z> <SID>Setup(1)
-vnoremap <unique> <expr> z> <SID>Setup(1)
+	let g:padder_updates_visual = 1
 
-nnoremap <unique> <expr> z<< <SID>Setup(0) .. '_'
-nnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
-vnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
-
-" __   __        _      _    _
-" \ \ / /_ _ _ _(_)__ _| |__| |___ ___
-"  \ V / _` | '_| / _` | '_ \ / -_|_-<
-"   \_/\__,_|_| |_\__,_|_.__/_\___/__/
-
-let s:pad = ''
-let s:direction = ''
+endif
 
 if !exists('g:padder_moves_cursor')
 
 	let g:padder_moves_cursor = 1
-
-endif
-
-if !exists('g:padder_updates_visual')
-
-	let g:padder_updates_visual = 1
 
 endif
 
@@ -53,10 +30,8 @@ if !(exists('g:padder_clusivity') && g:padder_clusivity == 0)
 
 endif
 
-"   ___                              _
-"  / __|___ _ __  _ __  __ _ _ _  __| |___
-" | (__/ _ \ '  \| '  \/ _` | ' \/ _` (_-<
-"  \___\___/_|_|_|_|_|_\__,_|_||_\__,_/__/
+let s:pad = ''
+let s:direction = ''
 
 command! -range=% -bar Crunch
 \
@@ -69,11 +44,6 @@ command! -range=% -nargs=* Bang
 command! -range=% -nargs=1 Bounce
 \
 \	silent <line1>,<line2> Crunch | <line1>,<line2> Bang <args>
-
-"  ___             _   _
-" | __|  _ _ _  __| |_(_)___ _ _  ___
-" | _| || | ' \/ _|  _| / _ \ ' \(_-<
-" |_| \_,_|_||_\__|\__|_\___/_||_/__/
 
 function! s:LongestLineLength(start, end)
 
@@ -146,3 +116,12 @@ function! s:Operator(type = '') abort
 	endif
 
 endfunction
+
+nnoremap <unique> <expr> z< <SID>Setup(0)
+vnoremap <unique> <expr> z< <SID>Setup(0)
+nnoremap <unique> <expr> z> <SID>Setup(1)
+vnoremap <unique> <expr> z> <SID>Setup(1)
+
+nnoremap <unique> <expr> z<< <SID>Setup(0) .. '_'
+nnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
+vnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
