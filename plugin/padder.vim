@@ -2,7 +2,9 @@
 " AUTHOR: Zachary Krepelka
 " DATE: Tuesday, January 23rd, 2024
 " ORIGIN: https://github.com/zachary-krepelka/vim-padder
-" UPDATED: Saturday, January 27th, 2024 at 11:38 AM
+" UPDATED: Saturday, January 27th, 2024 at 8:33 PM
+
+" Variables {{{1
 
 if exists('g:loaded_vim_padder')
 
@@ -33,17 +35,19 @@ endif
 let s:pad = ''
 let s:direction = ''
 
+" Commands {{{1
+
 command! -range=% -bar Crunch
 \
-\	silent keepjumps keeppatterns <line1>,<line2> s/\s\+$//e
+\	silent keeppatterns <line1>,<line2> s/\s\+$//e
 
-command! -range=% -nargs=* Bang
-\
-\	silent keeppatterns <line1>,<line2> call s:BigBang(<f-args>)
+command! -range=% -nargs=* Bang <line1>,<line2> call s:BigBang(<f-args>)
 
-command! -range=% -nargs=1 Bounce
+command! -range=% -nargs=* Bounce
 \
-\	silent <line1>,<line2> Crunch | <line1>,<line2> Bang <args>
+\	<line1>,<line2> Crunch | <line1>,<line2> Bang <args>
+
+" Functions {{{1
 
 function! s:LongestLineLength(start, end)
 
@@ -61,7 +65,8 @@ function! s:BigBang(column = 0, pad = ' ', front = '', back = '') range
 
 	execute
 	\
-	\ 	a:firstline..','..a:lastline..
+	\	"silent keeppatterns " ..
+	\ 	a:firstline..','..a:lastline ..
 	\
 	\ 	"s/$/\\=" ..
 	\	"a:front.." ..
@@ -117,6 +122,8 @@ function! s:Operator(type = '') abort
 
 endfunction
 
+" Mappings {{{1
+
 nnoremap <unique> <expr> z< <SID>Setup(0)
 vnoremap <unique> <expr> z< <SID>Setup(0)
 nnoremap <unique> <expr> z> <SID>Setup(1)
@@ -125,3 +132,14 @@ vnoremap <unique> <expr> z> <SID>Setup(1)
 nnoremap <unique> <expr> z<< <SID>Setup(0) .. '_'
 nnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
 vnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
+
+" Menus {{{1
+
+if has("gui_running") && has("menu") && &go =~# 'm'
+
+	amenu <silent> &Plugin.Padder.C&runch :Crunch<CR>
+	amenu <silent> &Plugin.Padder.B&ang   :Bang<CR>
+	amenu <silent> &Plugin.Padder.B&ounce :Bounce<CR>
+	amenu <silent> &Plugin.Padder.H&elp   :tab help vim-padder<CR>
+
+endif

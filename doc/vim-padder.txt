@@ -114,7 +114,8 @@ brackets indicate direction.  Keep this in mind as you read on.
 
 2.2 COMMANDS~
 
-Three commands are provided.
+Three commands are provided.  They are also avaliable from the menu in gvim,
+under `Plugin -> Padder -> command.`
 
                                                                        *:Crunch*
 	:[range]Crunch
@@ -124,36 +125,40 @@ Three commands are provided.
 				The default [range] is the whole buffer.
 
                                                                          *:Bang*
-	:[range]Bang [N] [char] [start] [end]
+	:[range]Bang [N] [char] [prefix] [suffix]
 
 			Pad lines in [range] with [char] up to the [N]th column
-			wherein the stings [start] and [end] prefix and suffix
-			the padding respectively.  The affixes are applied after
-			counting columns.
+			wherein the stings [prefix] and [suffix] prepend and
+			append the padding respectively.  The affixes are
+			applied after counting columns.
 
 			Every aforementioned argument is optional and assumes a
-			default value.  The arguments are positional.  If the
-			default value should be assumed, pass |v:none| for that
-			argument.  The defaults are as follows.
+			default value.
 
-				[range] --> whole buffer
-				[N]     --> length of longest line in [range]
-				[char]  --> space
-				[start] --> empty string
-				[end]   --> empty string
+				[range]  --> whole buffer
+				[N]      --> length of longest line in [range]
+				[char]   --> space
+				[prefix] --> empty string
+				[suffix] --> empty string
+
+			The arguments are positional.  It is helpful to read
+			|none-function_argument| if you want default arguments
+			succeeded by non-default arguments, e.g., >
+
+				:Bang v:none X
+<
 
                                                                        *:Bounce*
-	:[range]Bounce {n}
+	:[range]Bounce [N] [char] [prefix] [suffix]
 
 			Apply the commands |:Crunch| and |:Bang| in succession
-			over the same [range] while passing {n} with all other
-			values default.
+			over the same [range]. The arugments to |:Bounce| are
+			passed to |:Bang|.
 
-				The default [range] is the whole buffer.
-
-			Imagine a circumstance in which `:Bang X` is followed by
-			`:Bang Y` but X > Y.  This would fail to accomplish the
-			desired affect.  The |:Bounce| command resolves this.
+			In short, |:Bounce| is |:Bang| but forced.  Imagine a
+			circumstance in which `:Bang X` is followed by `:Bang Y`
+			but X > Y.  This would fail to accomplish the desired
+			affect.  The |:Bounce| command resolves this.
 
 2.3 REMARK -- THE ULTIMATE FATE OF THE UNIVERSE~
 
@@ -376,4 +381,5 @@ something more versatile, something that would work with motions.  I decided to
 adapt this functionality into a plugin to share with other people.
 
 ================================================================================
+UPDATED: Saturday, January 27th, 2024 at 8:34 PM
 vim:tw=80:ts=8:ft=help:
