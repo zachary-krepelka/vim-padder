@@ -252,7 +252,7 @@ block and issue the command `vip` to visually select it. >
 
 The command `:'<,'>Bang 50 .` would already suffice, but >
 
-	:'<,'>Bang 50 . \ \ \  \ \ \ |some-plugin-
+	:'<,'>Bang 50 . \ \ \  \ \ \ \|some-plugin-
 
 gives a cleaner appearence with little extra work. >
 
@@ -260,7 +260,7 @@ gives a cleaner appearence with little extra work. >
 	2. Usage   ..................................   |some-plugin-
 	3. Example   ................................   |some-plugin-
 
-We're essentially doing `Bang 50 . ___ ___|`, but we have to escape the spaces.
+We have to escape the spaces and the bar.
 
 The normal-mode command `1z>>.ip|some-plugin-<Enter>` is a close match.
 

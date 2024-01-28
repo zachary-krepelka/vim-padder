@@ -41,9 +41,9 @@ command! -range=% -bar Crunch
 \
 \	silent keeppatterns <line1>,<line2> s/\s\+$//e
 
-command! -range=% -nargs=* Bang <line1>,<line2> call s:BigBang(<f-args>)
+command! -range=% -nargs=* -bar Bang <line1>,<line2> call s:BigBang(<f-args>)
 
-command! -range=% -nargs=* Bounce
+command! -range=% -nargs=* -bar Bounce
 \
 \	<line1>,<line2> Crunch | <line1>,<line2> Bang <args>
 
