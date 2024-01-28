@@ -210,6 +210,8 @@ Here are some practical examples.
 
 	- `:Bang` would also suffice, but you may prefer `:Bang 80`
 
+	- Use `:bufdo Bang 80 | w` to bang every buffer up to 80 columns.
+
 - Use `ggz<G` to remove all trailing whitespace from a buffer.
 
 	- This is useful for source code cleanliness.
@@ -218,7 +220,7 @@ Here are some practical examples.
 
 	- `:Crunch` would also suffice.
 
-	- `:bufdo! Crunch | w` crunches whitspace in all buffers.
+	- Use `:bufdo Crunch | w` to zap trailing whitespace in every buffer.
 
 - Use `1z>ip = <Enter>` when writing variable declaration blocks.
 
