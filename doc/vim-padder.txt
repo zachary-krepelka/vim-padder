@@ -218,6 +218,8 @@ Here are some practical examples.
 
 	- `:Crunch` would also suffice.
 
+	- `:bufdo! Crunch | w` crunches whitspace in all buffers.
+
 - Use `1z>ip = <Enter>` when writing variable declaration blocks.
 
 	Before: >
