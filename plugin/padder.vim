@@ -1,8 +1,9 @@
 " FILENAME: padder.vim
 " AUTHOR: Zachary Krepelka
 " DATE: Tuesday, January 23rd, 2024
-" ORIGIN: https://github.com/zachary-krepelka/vim-padder
-" UPDATED: Saturday, January 27th, 2024 at 8:33 PM
+" ORIGIN: https://github.com/zachary-krepelka/vim-padder.git
+" DESCRIPTION: Pad lines up to a fixed width
+" UPDATED: Friday, February 2nd, 2024 at 1:12 PM
 
 " Variables {{{1
 
