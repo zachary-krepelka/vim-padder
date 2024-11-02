@@ -35,6 +35,7 @@ endif
 
 let s:pad = ''
 let s:direction = ''
+let s:follow_up = ''
 
 " Commands {{{1
 
@@ -76,10 +77,11 @@ function! s:BigBang(column = 0, pad = ' ', front = '', back = '') range
 
 endfunction
 
-function! s:Setup(direction, pad = ' ')
+function! s:Setup(direction, pad = ' ', follow_up = 0)
 
 	let s:direction = a:direction
 	let s:pad = a:pad
+	let s:follow_up = a:follow_up
 
 	set operatorfunc=s:Operator
 
@@ -105,7 +107,7 @@ function! s:Operator(type = '') abort
 		\
 		\	v:none, s:pad, v:none,
 		\
-		\	v:count == 1 ? input('> ') : '')
+		\	s:follow_up ? input('> ') : '')
 
 	endif
 
@@ -125,14 +127,37 @@ endfunction
 
 " Mappings {{{1
 
+" contraction operators
+
 nnoremap <unique> <expr> z< <SID>Setup(0)
 vnoremap <unique> <expr> z< <SID>Setup(0)
-nnoremap <unique> <expr> z> <SID>Setup(1)
-vnoremap <unique> <expr> z> <SID>Setup(1)
-
 nnoremap <unique> <expr> z<< <SID>Setup(0) .. '_'
-nnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
-vnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
+
+" expansion operators
+
+	" space-filling
+
+		" no follow up
+
+		nnoremap <unique> <expr> z> <SID>Setup(1)
+		vnoremap <unique> <expr> z> <SID>Setup(1)
+
+		" follow up
+
+		nnoremap <unique> <expr> Z> <SID>Setup(1, v:none, 1)
+		vnoremap <unique> <expr> Z> <SID>Setup(1, v:none, 1)
+
+	" custom-filling
+
+		" no follow up
+
+		nnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
+		vnoremap <unique> <expr> z>> <SID>Setup(1, getcharstr())
+
+		" follow up
+
+		nnoremap <unique> <expr> Z>> <SID>Setup(1, getcharstr(), 1)
+		vnoremap <unique> <expr> Z>> <SID>Setup(1, getcharstr(), 1)
 
 " Menus {{{1
 
