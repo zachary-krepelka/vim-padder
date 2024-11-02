@@ -59,7 +59,7 @@ endfunction
 
 function! s:BigBang(column = 0, pad = ' ', front = '', back = '') range
 
-	let l:column = (a:column ? a:column :
+	let l:column = (a:column ??
 	\
 	\		s:LongestLineLength(a:firstline, a:lastline) + 1
 	\
