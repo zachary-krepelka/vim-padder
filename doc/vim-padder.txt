@@ -345,7 +345,41 @@ Bonus: try to use a different character for the padding.
 
 ================================================================================
 
-CUSTOMIZATION     6                              *vim-padder-customization* {{{1
+REMARKS           6                                    *vim-padder-remarks* {{{1
+
+The operators provided by this plugin only work with |linewise| motions.  If you
+would like to use these operators with non-linewise motions, you must use a
+|forced-motion|.  For example, consider the following scenario. >
+
+	       *
+	      ***
+	     *****
+	    *******
+	   *********
+	  ***********
+	 *************
+
+Assume your cursor is at the center of the triangle.  Suppose you want to pad
+the upper half of this triangle.  To move over the upper half from this
+position, a knowledgeable Vim user would use the `{` motion.  However, it is not
+enough to type `Z>{|<Enter>` because `{` is not a linewise motion.  Instead, you
+must type `Z>V{|<Enter>`. >
+
+		   |
+	       *   |
+	      ***  |
+	     ***** |
+	    *******|
+	   *********
+	  ***********
+	 *************
+
+In general, to use a non-linewise motion with an operator that only excepts
+linewise motions, you must prefix that motion with a `V`.
+
+================================================================================
+
+CUSTOMIZATION     7                              *vim-padder-customization* {{{1
 
 Customization is achieved by setting variables in your |.vimrc| file.
 
@@ -379,7 +413,7 @@ Customization is achieved by setting variables in your |.vimrc| file.
 
 ================================================================================
 
-CREDITS           7                                    *vim-padder-credits* {{{1
+CREDITS           8                                    *vim-padder-credits* {{{1
 
 7.1 Pertaining to the source code~
 
@@ -415,5 +449,5 @@ something more versatile, something that would work with motions.  I decided to
 adapt this functionality into a plugin to share with other people.
 
 ================================================================================
-UPDATED: Friday, November 1st, 2024 at 9:07 PM
+UPDATED: Sunday, November 10th, 2024 at 3:44 AM
 vim:tw=80:ts=8:ft=help:fdm=marker

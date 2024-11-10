@@ -2,9 +2,9 @@
 	FILENAME: README.md
 	AUTHOR: Zachary Krepelka
 	DATE: Friday, January 26th, 2024
+	ABOUT: Pad lines up to a fixed width
 	ORIGIN: https://github.com/zachary-krepelka/vim-padder.git
-	DESCRIPTION: Pad lines up to a fixed width
-	UPDATED: Saturday, February 3rd, 2024 at 4:16 PM
+	UPDATED: Sunday, November 10th, 2024 at 3:48 AM
 -->
 
 # padder.vim
